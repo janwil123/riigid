@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Riikide Radar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Geograafia õppemäng</p>
+          <h1>Riikide Radar</h1>
+          <p class="hero-text">
+            Õpi riikide lippe, pealinnu ja rahvaarve ühe kiire mänguga. Vali teema,
+            vasta küsimustele ja jälgi oma seeriat.
+          </p>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-label">Punktid</span>
+            <strong id="score">0</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Seeria</span>
+            <strong id="streak">0</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Voor</span>
+            <strong id="round">1 / 10</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout">
+        <aside class="panel controls-panel">
+          <section>
+            <h2>Reziim</h2>
+            <div class="button-group" id="modeSwitcher">
+              <button class="chip active" data-mode="quiz">Mäng</button>
+              <button class="chip" data-mode="study">Õpi</button>
+            </div>
+          </section>
+
+          <section>
+            <h2>Teema</h2>
+            <div class="button-group topic-grid" id="topicSwitcher">
+              <button class="chip active" data-topic="flag">Lipud</button>
+              <button class="chip" data-topic="capital">Pealinnad</button>
+              <button class="chip" data-topic="population">Rahvaarv</button>
+              <button class="chip" data-topic="mixed">Segareziim</button>
+            </div>
+          </section>
+
+          <section>
+            <h2>Raskus</h2>
+            <div class="button-group" id="difficultySwitcher">
+              <button class="chip active" data-difficulty="easy">Kergem</button>
+              <button class="chip" data-difficulty="medium">Keskmine</button>
+              <button class="chip" data-difficulty="hard">Raskem</button>
+            </div>
+          </section>
+
+          <section class="legend">
+            <h2>Mälumäng</h2>
+            <p>
+              Mängureziimis vastad 10 küsimusele. Õppereziimis saad lihtsalt
+              riikide kaarte läbi lapata ja faktid meelde jätta.
+            </p>
+            <button id="restartButton" class="primary-button">Alusta uuesti</button>
+          </section>
+        </aside>
+
+        <section class="panel game-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Praegune küsimus</p>
+              <h2 id="questionTitle">Millise riigi lipp see on?</h2>
+            </div>
+            <span class="badge" id="questionBadge">Lipud</span>
+          </div>
+
+          <div class="question-card" id="questionCard">
+            <div class="prompt-visual" id="promptVisual" aria-live="polite"></div>
+            <p class="prompt-text" id="promptText"></p>
+            <div class="answer-grid" id="answerGrid"></div>
+            <div class="study-card hidden" id="studyCard"></div>
+          </div>
+
+          <div class="feedback-row">
+            <p id="feedbackText" class="feedback-text">Vali reziim ja alusta.</p>
+            <button id="nextButton" class="secondary-button">Järgmine</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
