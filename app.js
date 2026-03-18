@@ -246,7 +246,7 @@ const topicLabels = {
   flag: "Lipud",
   capital: "Pealinnad",
   population: "Rahvaarv",
-  mixed: "Segareziim",
+  mixed: "Segarežiim",
 };
 
 const difficultyLevels = {
@@ -458,7 +458,7 @@ function renderStudyCard() {
     <div class="study-fact"><span>Harjutusvihje</span><strong>Korda nime koos pealinnaga kolm korda.</strong></div>
   `;
 
-  feedbackTextEl.textContent = "Õppereziimis punkte ei arvestata.";
+  feedbackTextEl.textContent = "Õpperežiimis punkte ei arvestata.";
   feedbackTextEl.className = "feedback-text";
   nextButtonEl.textContent = "Järgmine kaart";
   updateStats();
@@ -489,7 +489,7 @@ function showResults() {
   studyCardEl.innerHTML = `
     <div class="study-fact"><span>Lõppseis</span><strong>${state.score} punkti</strong></div>
     <div class="study-fact"><span>Parim seeria</span><strong>${state.streak}</strong></div>
-    <div class="study-fact"><span>Soovitus</span><strong>Proovi nüüd segareziimi või raskemat taset.</strong></div>
+    <div class="study-fact"><span>Soovitus</span><strong>Proovi nüüd segarežiimi või raskemat taset.</strong></div>
   `;
   feedbackTextEl.textContent = "Vajuta «Alusta uuesti», et uus mäng käivitada.";
   feedbackTextEl.className = "feedback-text success";
