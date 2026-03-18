@@ -268,24 +268,26 @@ function formatPopulation(population) {
   return new Intl.NumberFormat("et-EE").format(population);
 }
 
-function randomCountry(excluded = []) {
-  const excludedNames = new Set(excluded.map((item) => item.name));
-  const pool = countries.filter((country) => !excludedNames.has(country.name));
-  return pool[Math.floor(Math.random() * pool.length)];
+function nextUnusedIndex(usedIndices) {
+  if (usedIndices.length === 0) {
+    usedIndices.push(...shuffle(countries.map((_, index) => index)));
+  }
+
+  return usedIndices.pop();
 }
 
-function nextUnusedIndex(usedIndices) {
-  if (usedIndices.length >= countries.length) {
-    usedIndices.length = 0;
-  }
+function takeRandomItems(list, count, getKey = (item) => item) {
+  const seenKeys = new Set();
 
-  let index = Math.floor(Math.random() * countries.length);
-  while (usedIndices.includes(index)) {
-    index = Math.floor(Math.random() * countries.length);
-  }
+  return shuffle(list).filter((item) => {
+    const key = getKey(item);
+    if (seenKeys.has(key)) {
+      return false;
+    }
 
-  usedIndices.push(index);
-  return index;
+    seenKeys.add(key);
+    return true;
+  }).slice(0, count);
 }
 
 function getActiveTopic() {
@@ -305,14 +307,15 @@ function createQuestion() {
 
   let question;
   if (topic === "flag") {
+    const distractors = takeRandomItems(
+      countries.filter((item) => item.name !== country.name),
+      answerCount - 1,
+      (item) => item.name
+    ).map((item) => item.name);
+
     const options = shuffle([
       country.name,
-      ...shuffle(
-        countries
-          .filter((item) => item.name !== country.name)
-          .slice(0, answerCount * 2)
-          .map((item) => item.name)
-      ).slice(0, answerCount - 1),
+      ...distractors,
     ]);
 
     question = {
@@ -328,14 +331,15 @@ function createQuestion() {
   }
 
   if (topic === "capital") {
+    const distractors = takeRandomItems(
+      countries.filter((item) => item.name !== country.name),
+      answerCount - 1,
+      (item) => item.capital
+    ).map((item) => item.capital);
+
     const options = shuffle([
       country.capital,
-      ...shuffle(
-        countries
-          .filter((item) => item.name !== country.name)
-          .slice(0, answerCount * 2)
-          .map((item) => item.capital)
-      ).slice(0, answerCount - 1),
+      ...distractors,
     ]);
 
     question = {
@@ -357,12 +361,11 @@ function createQuestion() {
         Math.abs(second.population - country.population)
     );
 
-    const distractors = shuffle(
-      sorted
-        .filter((item) => item.name !== country.name)
-        .slice(0, answerCount * 2)
-        .map((item) => formatPopulation(item.population))
-    ).slice(0, answerCount - 1);
+    const distractors = takeRandomItems(
+      sorted.filter((item) => item.name !== country.name).slice(0, answerCount * 4),
+      answerCount - 1,
+      (item) => item.population
+    ).map((item) => formatPopulation(item.population));
 
     const options = shuffle([formatPopulation(country.population), ...distractors]);
 
