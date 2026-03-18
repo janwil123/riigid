@@ -244,6 +244,7 @@ const studyCardEl = document.querySelector("#studyCard");
 
 const topicLabels = {
   flag: "Lipud",
+  "choose-flag": "Vali lipp",
   capital: "Pealinnad",
   population: "Rahvaarv",
   mixed: "Segarežiim",
@@ -295,7 +296,7 @@ function getActiveTopic() {
     return state.topic;
   }
 
-  const topics = ["flag", "capital", "population"];
+  const topics = ["flag", "choose-flag", "capital", "population"];
   return topics[Math.floor(Math.random() * topics.length)];
 }
 
@@ -354,6 +355,28 @@ function createQuestion() {
     };
   }
 
+  if (topic === "choose-flag") {
+    const distractors = takeRandomItems(
+      countries.filter((item) => item.name !== country.name),
+      answerCount - 1,
+      (item) => item.code
+    ).map((item) => item.flag);
+
+    const options = shuffle([country.flag, ...distractors]);
+
+    question = {
+      topic,
+      country,
+      correctAnswer: country.flag,
+      title: `Milline lipp kuulub riigile ${country.name}?`,
+      promptText: "Vali allolevate lippude seast õige vaste.",
+      visualType: "country-name",
+      visualValue: country.name,
+      options,
+      answerStyle: "flag",
+    };
+  }
+
   if (topic === "population") {
     const sorted = [...countries].sort(
       (first, second) =>
@@ -400,6 +423,15 @@ function renderVisual(question) {
     return;
   }
 
+  if (question.visualType === "country-name") {
+    promptVisualEl.innerHTML = `
+      <div class="capital-visual">
+        <div>${question.visualValue}</div>
+      </div>
+    `;
+    return;
+  }
+
   promptVisualEl.innerHTML = `
     <div class="population-visual">
       <div class="flag-emoji">${question.visualValue}</div>
@@ -426,7 +458,12 @@ function renderQuizQuestion() {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "answer-button";
-    button.textContent = option;
+    if (question.answerStyle === "flag") {
+      button.classList.add("flag-answer");
+      button.innerHTML = `<span class="flag-emoji">${option}</span>`;
+    } else {
+      button.textContent = option;
+    }
     button.addEventListener("click", () => handleAnswer(option, button));
     answerGridEl.append(button);
   });
